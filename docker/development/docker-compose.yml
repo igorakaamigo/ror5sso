@@ -1,0 +1,39 @@
+version: '3'
+services:
+  # Database server
+  ror5sso-postgres:
+    image: postgres:10.5-alpine
+    ports:
+      - '5432'
+    volumes:
+      - ror5sso-postgres-data:/var/lib/postgresql/data
+    networks:
+      - ror5sso
+  # Redis service
+  ror5sso-redis:
+    image: redis:5.0-alpine
+    ports:
+      - '6379'
+    networks:
+      - ror5sso
+  # Nginx frontend server
+  ror5sso-web:
+    build:
+      context: ../../
+      dockerfile: docker/development/web/Dockerfile
+      args:
+        TIMEZONE: Europe/Moscow
+        SERVER_NAME_CLIENT: ror5sso.local
+        SERVER_NAME_IDP: idp.ror5sso.local
+        UPSTREAM_CLIENT: google.ru
+        UPSTREAM_IDP: rbc.ru
+    ports:
+      - '80:80'
+    networks:
+      - ror5sso
+
+volumes:
+  ror5sso-postgres-data: {}
+
+networks:
+  ror5sso: {}

@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+APP_ROOT = File.expand_path('..', __dir__)
+Dir.chdir(APP_ROOT) do
+  begin
+    exec 'docker-compose', *(%W[-f docker/#{ENV.fetch('RAILS_ENV') { 'development' }}/docker-compose.yml] + ARGV)
+  rescue Errno::ENOENT
+    $stderr.puts 'docker-compose executable was not detected in the system'
+    exit 1
+  end
+end
