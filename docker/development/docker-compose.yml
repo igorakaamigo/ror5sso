@@ -44,6 +44,8 @@ services:
       - ror5sso-client-tmp:/var/www/tmp
     networks:
       - ror5sso
+    depends_on:
+      - ror5sso-postgres
   # RoR idp backend
   ror5sso-app-idp:
     build:
@@ -61,6 +63,8 @@ services:
       - ror5sso-idp-tmp:/var/www/tmp
     networks:
       - ror5sso
+    depends_on:
+      - ror5sso-postgres
 
 volumes:
   ror5sso-postgres-data: {}
