@@ -23,7 +23,10 @@ services:
     ports:
       - '80:80'
     networks:
-      - ror5sso
+      ror5sso:
+        aliases:
+          - idp.ror5sso.local
+          - ror5sso.local
     depends_on:
       - ror5sso-app-client
       - ror5sso-app-idp
@@ -37,6 +40,9 @@ services:
         TIMEZONE: Europe/Moscow
     environment:
       DB_HOST: ror5sso-postgres
+      IDP_SERVER: http://idp.ror5sso.local
+      IDP_KEY: '7e47b85bce52f573323338def6dc2cb11b23d35d25a0b7732759d2a2b0a570d5'
+      IDP_SECRET: '9cd06a6a4ea7adb013483e49a4c5370b0ea1e0a73dce4daacc5c0649ed2f2596'
     ports:
       - '3000'
     volumes:
@@ -56,6 +62,9 @@ services:
         TIMEZONE: Europe/Moscow
     environment:
       DB_HOST: ror5sso-postgres
+      IDP_CLIENT: http://ror5sso.local
+      IDP_KEY: '7e47b85bce52f573323338def6dc2cb11b23d35d25a0b7732759d2a2b0a570d5'
+      IDP_SECRET: '9cd06a6a4ea7adb013483e49a4c5370b0ea1e0a73dce4daacc5c0649ed2f2596'
     ports:
       - '3000'
     volumes:

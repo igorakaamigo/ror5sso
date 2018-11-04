@@ -5,3 +5,11 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+#
+Doorkeeper::Application.create(
+  name: 'Client',
+  uid: ENV.fetch('IDP_KEY'),
+  secret: ENV.fetch('IDP_SECRET'),
+  redirect_uri: "#{ENV.fetch('IDP_CLIENT')}/auth/idp/callback",
+  confidential: true
+)
