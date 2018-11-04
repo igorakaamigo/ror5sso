@@ -9,13 +9,6 @@ services:
       - ror5sso-postgres-data:/var/lib/postgresql/data
     networks:
       - ror5sso
-  # Redis service
-  ror5sso-redis:
-    image: redis:5.0-alpine
-    ports:
-      - '6379'
-    networks:
-      - ror5sso
   # Nginx frontend server
   ror5sso-web:
     build:
@@ -25,15 +18,54 @@ services:
         TIMEZONE: Europe/Moscow
         SERVER_NAME_CLIENT: ror5sso.local
         SERVER_NAME_IDP: idp.ror5sso.local
-        UPSTREAM_CLIENT: google.ru
-        UPSTREAM_IDP: rbc.ru
+        UPSTREAM_CLIENT: ror5sso-app-client:3000
+        UPSTREAM_IDP: ror5sso-app-idp:3000
     ports:
       - '80:80'
+    networks:
+      - ror5sso
+    depends_on:
+      - ror5sso-app-client
+      - ror5sso-app-idp
+  # RoR client backend
+  ror5sso-app-client:
+    build:
+      context: ../../
+      dockerfile: docker/development/app/Dockerfile
+      args:
+        RAILS_ENV: development
+        TIMEZONE: Europe/Moscow
+    environment:
+      DB_HOST: ror5sso-postgres
+    ports:
+      - '3000'
+    volumes:
+      - ../../client:/var/www
+      - ror5sso-client-tmp:/var/www/tmp
+    networks:
+      - ror5sso
+  # RoR idp backend
+  ror5sso-app-idp:
+    build:
+      context: ../../
+      dockerfile: docker/development/app/Dockerfile
+      args:
+        RAILS_ENV: development
+        TIMEZONE: Europe/Moscow
+    environment:
+      DB_HOST: ror5sso-postgres
+    ports:
+      - '3000'
+    volumes:
+      - ../../idp:/var/www
+      - ror5sso-idp-tmp:/var/www/tmp
     networks:
       - ror5sso
 
 volumes:
   ror5sso-postgres-data: {}
+  ror5sso-client-tmp: {}
+  ror5sso-idp-tmp: {}
 
 networks:
   ror5sso: {}
