@@ -1,6 +1,6 @@
 # Single sign-on (SSO) RoR5 client-server demo
 
-This is a demonstration of single sign-on for RoR5 applications. 
+This is a demonstration of single sign-on for RoR5 applications.
 
 ## Features
 * docker-composed
@@ -33,6 +33,13 @@ Type in the terminal window:
 $ cd ror5-sso
 $ bin/docker-compose up
 ```
+
+## Usage
+1. Startup steps
+2. Navigate to http://ror5sso.local/
+3. Press "Sign in" at the upper-right corner
+4. You will be redirected to IdP application
+5. After successful sign-in/sign-up at IdP you'll be redirected back to the Client app.
 
 ## Shutdown
 Then type in the terminal window:

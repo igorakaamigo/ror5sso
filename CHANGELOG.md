@@ -7,5 +7,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Initial project structure
-- Two demo applications
-- Basic project description
+- IdP application
+- Client application
+- Docker infrastructure setup
